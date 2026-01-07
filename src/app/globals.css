@@ -1,0 +1,327 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand palette */
+  --mp-bg: #fff7f2;
+  --mp-text-primary: #2e2e2e;
+  --mp-text-secondary: #6b6b6b;
+  --mp-accent: #d4a5a5;
+  --mp-accent-secondary: #8a9ba8;
+  --mp-border: #e6ddd8;
+
+  /* Typography tokens */
+  --mp-font-heading: "Canela", "Libre Baskerville", serif;
+  --mp-font-body: "Satoshi", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --mp-font-editorial: "Playfair Display", "Cormorant Garamond", "Bodoni Moda", "Didot", "Libre Baskerville", serif;
+
+  /* Motion tokens */
+  --mp-radius-pill: 999px;
+  --mp-radius-soft: 16px;
+  --mp-transition-soft: 250ms ease-in-out;
+}
+
+@theme inline {
+  --color-background: var(--mp-bg);
+  --color-foreground: var(--mp-text-primary);
+  --color-accent: var(--mp-accent);
+  --color-accent-secondary: var(--mp-accent-secondary);
+  --color-border-soft: var(--mp-border);
+
+  --font-sans: var(--mp-font-body);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--mp-bg);
+  color: var(--mp-text-primary);
+  font-family: var(--mp-font-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Heading typography */
+.mp-heading {
+  font-family: var(--mp-font-heading);
+  letter-spacing: 0.04em;
+}
+
+.mp-section-title {
+  font-family: var(--mp-font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mp-body {
+  font-family: var(--mp-font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.mp-muted {
+  color: var(--mp-text-secondary);
+}
+
+/* Button primitives – accent only for backgrounds, never text */
+.mp-button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 1.75rem;
+  padding-block: 0.75rem;
+  border-radius: var(--mp-radius-pill);
+  background-color: var(--mp-accent);
+  color: #2e2e2e;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--mp-transition-soft),
+    transform 220ms ease-out,
+    box-shadow 220ms ease-out;
+}
+
+.mp-button-primary:hover {
+  background-color: #c49090;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.mp-button-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.mp-button-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 1.25rem;
+  padding-block: 0.6rem;
+  border-radius: var(--mp-radius-pill);
+  border: 1px solid var(--mp-border);
+  background-color: transparent;
+  color: var(--mp-text-primary);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background-color var(--mp-transition-soft),
+    border-color var(--mp-transition-soft);
+}
+
+.mp-button-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: var(--mp-accent-secondary);
+}
+
+/* Image hover – max scale 1.03 */
+.mp-image-hover {
+  transform-origin: center center;
+  transition:
+    transform 600ms ease-out,
+    box-shadow 600ms ease-out;
+}
+
+.mp-image-hover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Section spacing */
+.mp-section {
+  padding-block: clamp(3rem, 8vw, 5rem);
+}
+
+.mp-container {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* Simple fade-in for initial load (enhanced by Framer Motion) */
+.mp-fade-in {
+  opacity: 0;
+  animation: mpFadeIn 600ms ease-out forwards;
+}
+
+@keyframes mpFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero section smooth transitions */
+.hero-image-container {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* About page prose styling */
+.prose {
+  color: var(--mp-text-primary);
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.prose h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Hide native scrollbars for horizontal strips */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hero Tagline - Editorial Serif Style with Creative Effects */
+.mp-hero-tagline {
+  font-family: "Didot", "Bodoni Moda", "Playfair Display", "Cormorant Garamond", serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  text-transform: uppercase;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.mp-hero-tagline-line {
+  display: block;
+  position: relative;
+  margin-bottom: 0.15em;
+  will-change: transform, opacity;
+}
+
+.mp-hero-tagline-word {
+  display: inline-block;
+  position: relative;
+  transition: letter-spacing 0.3s ease, transform 0.3s ease;
+  /* Subtle glow effect */
+  text-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.1),
+    0 2px 10px rgba(0, 0, 0, 0.2),
+    0 0 40px rgba(255, 255, 255, 0.05);
+}
+
+/* Creative hover effect on words */
+.mp-hero-tagline-word:hover {
+  letter-spacing: 0.12em;
+  transform: translateY(-2px);
+  text-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.15),
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(255, 255, 255, 0.08);
+  transition: letter-spacing 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              text-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle pulse animation for first line */
+.mp-hero-tagline-line:first-child .mp-hero-tagline-word {
+  animation: subtlePulse 4s ease-in-out infinite;
+  animation-delay: calc(var(--word-index, 0) * 0.1s);
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Creative letter reveal effect */
+.mp-hero-tagline-word::before {
+  content: attr(data-word);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.3);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Decorative underline effect on hover */
+.mp-hero-tagline-line::after {
+  content: "";
+  position: absolute;
+  bottom: -0.2em;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mp-hero-tagline-line:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}

@@ -1,8 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
 import { sanityClient } from "@/lib/sanity.client";
-import { urlForImage } from "@/lib/sanity.client";
 import groq from "groq";
+import { VideoPlayer } from "@/components/video-player";
 
 const filmsQuery = groq`
   *[_type == "film" && defined(slug.current)]
@@ -10,6 +8,15 @@ const filmsQuery = groq`
     _id,
     title,
     "slug": slug.current,
+    videoFile{
+      asset->{
+        _id,
+        url,
+        originalFilename,
+        mimeType,
+        size
+      }
+    },
     vimeoId,
     thumbnail,
   }
@@ -19,7 +26,16 @@ type Film = {
   _id: string;
   title: string;
   slug: string;
-  vimeoId: string;
+  videoFile?: {
+    asset: {
+      _id: string;
+      url: string;
+      originalFilename?: string;
+      mimeType?: string;
+      size?: number;
+    };
+  } | null;
+  vimeoId?: string | null;
   thumbnail?: {
     _type: "image";
     asset: { _ref: string; _type: "reference" };
@@ -59,24 +75,14 @@ export default async function FilmsPage() {
                   key={film._id}
                   className="space-y-3 rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] p-4"
                 >
-                  <Link href={`/films#${film.slug}`} className="space-y-3 block">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-[var(--mp-border)] bg-[#f2e3d7]">
-                      {film.thumbnail ? (
-                        <Image
-                          src={urlForImage(film.thumbnail).width(900).url()}
-                          alt={
-                            film.thumbnail.alt ||
-                            `${film.title} wedding film by Maa's Production`
-                          }
-                          fill
-                          className="object-cover mp-image-hover"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-[#f2e3d7] flex items-center justify-center">
-                          <span className="mp-body mp-muted text-sm">Video</span>
-                        </div>
-                      )}
-                    </div>
+                  <div className="space-y-3">
+                    <VideoPlayer
+                      videoUrl={film.videoFile?.asset?.url || null}
+                      vimeoId={film.vimeoId || null}
+                      thumbnail={film.thumbnail || null}
+                      title={film.title}
+                      className="border border-[var(--mp-border)]"
+                    />
                     <div className="space-y-1">
                       <h3 className="mp-heading text-sm tracking-[0.18em] uppercase">
                         {film.title}
@@ -86,7 +92,7 @@ export default async function FilmsPage() {
                         become one.
                       </p>
                     </div>
-                  </Link>
+                  </div>
                 </article>
               ))}
             </div>

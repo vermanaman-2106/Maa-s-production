@@ -22,12 +22,29 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "videoFile",
+      title: "Video File",
+      type: "file",
+      description:
+        "Upload a video file directly. Supported formats: MP4, WebM, MOV. Recommended: MP4 (H.264 codec) for best compatibility.",
+      options: {
+        accept: "video/*",
+      },
+    }),
+    defineField({
       name: "vimeoId",
-      title: "Vimeo ID",
+      title: "Vimeo ID (Optional)",
       type: "string",
       description:
-        "Paste only the Vimeo video ID (the numbers at the end of the URL).",
-      validation: (Rule) => Rule.required(),
+        "Alternative: Paste only the Vimeo video ID (the numbers at the end of the URL). Use this if you prefer hosting on Vimeo instead of uploading directly.",
+      validation: (Rule) =>
+        Rule.custom((vimeoId, context) => {
+          const videoFile = (context.parent as any)?.videoFile;
+          if (!videoFile && !vimeoId) {
+            return "Either a Video File or Vimeo ID must be provided.";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "thumbnail",
@@ -52,10 +69,11 @@ export default defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "vimeoId",
+      subtitle: "videoFile.asset.originalFilename",
       media: "thumbnail",
     },
   },
 });
+
 
 

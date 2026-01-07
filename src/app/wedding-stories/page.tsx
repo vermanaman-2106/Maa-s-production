@@ -10,8 +10,6 @@ const weddingStoriesQuery = groq`
     _id,
     title,
     "slug": slug.current,
-    location,
-    weddingDate,
     heroImage,
     shortIntro,
   }
@@ -21,8 +19,6 @@ type WeddingStory = {
   _id: string;
   title: string;
   slug: string;
-  location?: string;
-  weddingDate?: string;
   heroImage?: {
     _type: "image";
     asset: { _ref: string; _type: "reference" };
@@ -40,72 +36,73 @@ export default async function WeddingStoriesPage() {
 
   return (
     <div className="bg-[var(--mp-bg)]">
-      <section className="mp-section border-b border-[var(--mp-border)]">
-        <div className="mp-container space-y-8">
-          <header>
-            <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted mb-3">
-              Wedding Stories
-            </p>
-            <h1 className="mp-section-title">All Wedding Stories</h1>
-            <p className="mp-body mp-muted max-w-2xl mt-4">
-              A collection of quiet, timeless wedding stories documented by
-              Maa's Production. Each celebration tells its own story.
-            </p>
-          </header>
-
-          {stories.length === 0 ? (
+      {stories.length === 0 ? (
+        <section className="mp-section">
+          <div className="mp-container">
             <p className="mp-body mp-muted text-[0.85rem]">
               Wedding stories from Maa's Production will appear here once you
               start publishing them in Sanity Studio.
             </p>
-          ) : (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {stories.map((story) => (
-                <article
-                  key={story._id}
-                  className="space-y-3 border border-[var(--mp-border)] rounded-2xl overflow-hidden bg-[#fffaf7]"
-                >
-                  <Link
-                    href={`/wedding-stories/${story.slug}`}
-                    className="block"
-                  >
-                    <div className="relative aspect-[4/5] overflow-hidden">
-                      {story.heroImage ? (
-                        <Image
-                          src={urlForImage(story.heroImage).width(900).url()}
-                          alt={
-                            story.heroImage.alt ||
-                            `${story.title} wedding story by Maa's Production`
-                          }
-                          fill
-                          className="object-cover mp-image-hover"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-[#f2e3d7]" />
-                      )}
-                    </div>
-                    <div className="space-y-1 px-4 pb-4 pt-3">
-                      <h3 className="mp-heading text-sm tracking-[0.18em] uppercase">
+          </div>
+        </section>
+      ) : (
+        <div className="w-full">
+          {stories.map((story, index) => (
+            <section
+              key={story._id}
+              className={`w-full border-b border-[var(--mp-border)] ${
+                index === 0 ? "" : ""
+              }`}
+            >
+              <div className="w-full max-w-[1920px] mx-auto px-6 md:px-8 lg:px-10 xl:px-12 py-12 md:py-16 lg:py-20">
+                {/* Top Row: Two Columns */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 mb-8 md:mb-12">
+                  {/* Left Column: Large Heading (Bride & Groom Names) */}
+                  <div className="flex items-start">
+                    <Link href={`/wedding-stories/${story.slug}`}>
+                      <h2 className="mp-heading text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-[1.1] tracking-[0.05em] uppercase">
                         {story.title}
-                      </h3>
-                      <p className="mp-body mp-muted text-[0.8rem]">
-                        {[story.location, story.weddingDate]
-                          .filter(Boolean)
-                          .join(" · ") || "A wedding story by Maa's Production"}
+                      </h2>
+                    </Link>
+                  </div>
+
+                  {/* Right Column: Story Text */}
+                  <div className="flex items-start">
+                    {story.shortIntro ? (
+                      <p className="mp-body text-base md:text-lg lg:text-xl leading-relaxed">
+                        {story.shortIntro}
                       </p>
-                      {story.shortIntro && (
-                        <p className="mp-body mp-muted text-[0.8rem] mt-2 line-clamp-2">
-                          {story.shortIntro}
-                        </p>
-                      )}
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          )}
+                    ) : (
+                      <p className="mp-body mp-muted text-base md:text-lg leading-relaxed">
+                        A wedding story documented by Maa's Production.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Image Area: Large Image Below Text */}
+                {story.heroImage && (
+                  <div className="w-full relative aspect-[16/10] md:aspect-[16/9] overflow-hidden">
+                    <Link href={`/wedding-stories/${story.slug}`}>
+                      <Image
+                        src={urlForImage(story.heroImage).width(1920).quality(90).url()}
+                        alt={
+                          story.heroImage.alt ||
+                          `${story.title} wedding story by Maa's Production`
+                        }
+                        fill
+                        className="object-cover"
+                        sizes="100vw"
+                        unoptimized
+                      />
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </section>
+          ))}
         </div>
-      </section>
+      )}
     </div>
   );
 }

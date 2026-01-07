@@ -14,6 +14,7 @@ export type WeddingStory = {
   location?: string;
   weddingDate?: string;
   heroImage?: SanityImage | null;
+  shortIntro?: string;
   featured?: boolean;
 };
 
@@ -21,7 +22,18 @@ export type Film = {
   _id: string;
   title: string;
   slug: string;
-  vimeoId: string;
+  videoFile?: {
+    _type: "file";
+    asset: {
+      _ref: string;
+      _type: "reference";
+      url?: string;
+      originalFilename?: string;
+      mimeType?: string;
+      size?: number;
+    };
+  } | null;
+  vimeoId?: string | null;
   thumbnail?: SanityImage | null;
   featured?: boolean;
 };
@@ -85,6 +97,7 @@ export const featuredStoriesQuery = groq`
     location,
     weddingDate,
     heroImage,
+    shortIntro,
     featured,
   }
 `;
@@ -95,8 +108,24 @@ export const featuredFilmsQuery = groq`
     _id,
     title,
     "slug": slug.current,
+    videoFile{
+      asset->{
+        _id,
+        url,
+        originalFilename,
+        mimeType,
+        size
+      }
+    },
     vimeoId,
-    thumbnail,
+    thumbnail{
+      asset->{
+        _id,
+        _ref,
+        _type
+      },
+      alt
+    },
     featured,
   }
 `;

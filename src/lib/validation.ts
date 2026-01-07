@@ -28,4 +28,33 @@ export const availabilitySchema = z.object({
 
 export type AvailabilityPayload = z.infer<typeof availabilitySchema>;
 
+export const contactSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, "First name is required.")
+    .max(60, "First name is too long."),
+  lastName: z
+    .string()
+    .min(1, "Last name is required.")
+    .max(60, "Last name is too long."),
+  email: z
+    .string()
+    .min(1, "Email is required.")
+    .email("Please enter a valid email address.")
+    .max(120, "Email is too long."),
+  subject: z
+    .string()
+    .min(2, "Subject is required.")
+    .max(200, "Subject is too long."),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters.")
+    .max(2000, "Message is too long."),
+  // Honeypot - must remain empty
+  company: z.string().optional(),
+});
+
+export type ContactPayload = z.infer<typeof contactSchema>;
+
+
 

@@ -9,7 +9,7 @@ type HomeGalleryStripProps = {
   images: GalleryImage[];
 };
 
-const AUTO_SLIDE_INTERVAL = 4000;
+const AUTO_SLIDE_INTERVAL = 3000;
 
 export function HomeGalleryStrip({ images }: HomeGalleryStripProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -130,7 +130,7 @@ export function HomeGalleryStrip({ images }: HomeGalleryStripProps) {
               scaleClass = "scale-100";
               opacityClass = "opacity-100";
             } else {
-              scaleClass = "scale-90";
+              scaleClass = "scale-60";
               opacityClass = "opacity-80";
             }
           }

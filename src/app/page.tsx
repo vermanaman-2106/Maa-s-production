@@ -11,6 +11,9 @@ import {
 import { urlForImage } from "@/lib/sanity.client";
 import { HeroSection } from "@/components/hero-section";
 import { HomeGalleryStrip } from "@/components/home-gallery-strip";
+import { HomeFilmsSection } from "@/components/home-films-section";
+import { HomeWeddingStories } from "@/components/home-wedding-stories";
+import { HomeContactSection } from "@/components/home-contact-section";
 
 export default async function Home() {
   const [stories, films, testimonial, heroData, about, galleryImages] =
@@ -28,129 +31,32 @@ export default async function Home() {
       {/* Hero Section */}
       <HeroSection heroData={heroData} />
 
-      {/* Featured Wedding Stories placeholder */}
-      <section className="mp-section border-b border-[var(--mp-border)]">
-        <div className="mp-container space-y-8">
-          <header className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted">
-                Wedding Stories
-              </p>
-              <h2 className="mp-section-title">Featured celebrations</h2>
-            </div>
-            <Link href="/wedding-stories" className="mp-button-ghost">
-              View all stories
-            </Link>
-          </header>
-
-          {stories.length === 0 ? (
+      {/* Wedding Stories Section */}
+      {stories.length > 0 ? (
+        <HomeWeddingStories stories={stories} />
+      ) : (
+        <section className="mp-section border-b border-[var(--mp-border)]">
+          <div className="mp-container">
             <p className="mp-body mp-muted text-[0.85rem]">
               Wedding stories from Maa's Production will appear here soon.
             </p>
-          ) : (
-            <div className="grid gap-8 md:grid-cols-3">
-              {stories.map((story) => (
-                <article
-                  key={story._id}
-                  className="space-y-3 border border-[var(--mp-border)] rounded-2xl overflow-hidden bg-[#fffaf7]"
-                >
-                  <Link
-                    href={`/wedding-stories/${story.slug}`}
-                    className="block"
-                  >
-                    <div className="relative aspect-[4/5] overflow-hidden">
-                      {story.heroImage ? (
-                        <Image
-                          src={urlForImage(story.heroImage).width(900).url()}
-                          alt={
-                            story.heroImage.alt ||
-                            `${story.title} wedding story by Maa's Production`
-                          }
-                          fill
-                          className="object-cover mp-image-hover"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-[#f2e3d7]" />
-                      )}
-                    </div>
-                    <div className="space-y-1 px-4 pb-4 pt-3">
-                      <h3 className="mp-heading text-sm tracking-[0.18em] uppercase">
-                        {story.title}
-                      </h3>
-                      <p className="mp-body mp-muted text-[0.8rem]">
-                        {[story.location, story.weddingDate]
-                          .filter(Boolean)
-                          .join(" · ") || "A wedding story by Maa's Production"}
-                      </p>
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
-      {/* Featured Films placeholder */}
-      <section className="mp-section border-b border-[var(--mp-border)]">
-        <div className="mp-container space-y-8">
-          <header className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted">
-                Films
-              </p>
-              <h2 className="mp-section-title">Moving, not just moving images</h2>
-            </div>
-            <Link href="/films" className="mp-button-ghost">
-              Watch films
-            </Link>
-          </header>
-
-          {films.length === 0 ? (
+      {/* Featured Films Section */}
+      {films.length > 0 ? (
+        <HomeFilmsSection films={films} />
+      ) : (
+        <section className="mp-section border-b border-[var(--mp-border)]">
+          <div className="mp-container">
             <p className="mp-body mp-muted text-[0.85rem]">
               Signature wedding films from Maa's Production will appear here
               soon.
             </p>
-          ) : (
-            <div className="grid gap-8 md:grid-cols-3">
-              {films.map((film) => (
-                <article
-                  key={film._id}
-                  className="space-y-3 rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] p-4"
-                >
-                  <Link
-                    href={`/films#${film.slug}`}
-                    className="space-y-3 block"
-                  >
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-[var(--mp-border)] bg-[#f2e3d7]">
-                      {film.thumbnail ? (
-                        <Image
-                          src={urlForImage(film.thumbnail).width(900).url()}
-                          alt={
-                            film.thumbnail.alt ||
-                            `${film.title} wedding film by Maa's Production`
-                          }
-                          fill
-                          className="object-cover mp-image-hover"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="mp-heading text-sm tracking-[0.18em] uppercase">
-                        {film.title}
-                      </h3>
-                      <p className="mp-body mp-muted text-[0.8rem]">
-                        A gentle, cinematic glimpse into the day your families
-                        become one.
-                      </p>
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* Gallery Images Section */}
       {galleryImages.length > 0 && (
@@ -302,6 +208,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Contact Section */}
+      <HomeContactSection />
     </div>
   );
 }

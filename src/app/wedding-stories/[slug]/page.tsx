@@ -91,7 +91,7 @@ export default async function WeddingStoryPage({ params }: PageProps) {
               We couldn&apos;t find this wedding story yet. Please confirm that the story is
               published in Sanity Studio and that its slug exactly matches
               <code className="ml-1 rounded bg-black/5 px-1.5 py-0.5 text-[0.8rem]">
-                {params.slug}
+                {slug}
               </code>
               .
             </p>

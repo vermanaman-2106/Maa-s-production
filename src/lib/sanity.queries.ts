@@ -21,6 +21,7 @@ export type WeddingStory = {
 export type Film = {
   _id: string;
   title: string;
+  coupleNames?: string;
   slug: string;
   videoFile?: {
     _type: "file";
@@ -104,9 +105,10 @@ export const featuredStoriesQuery = groq`
 
 export const featuredFilmsQuery = groq`
   *[_type == "film" && defined(slug.current) && featured == true]
-  | order(_createdAt desc)[0...3]{
+  | order(_createdAt desc)[0...2]{
     _id,
     title,
+    coupleNames,
     "slug": slug.current,
     videoFile{
       asset->{
@@ -140,6 +142,16 @@ export const homeTestimonialQuery = groq`
   }
 `;
 
+export const homeTestimonialsQuery = groq`
+  *[_type == "testimonial" && defined(quote)]
+  | order(_createdAt desc)[0...5]{
+    _id,
+    coupleNames,
+    locationOrContext,
+    quote,
+  }
+`;
+
 export const heroImageQuery = groq`
   *[_type == "heroImage" && active == true]
   | order(_createdAt desc)[0]{
@@ -162,6 +174,10 @@ export async function getFeaturedFilms() {
 
 export async function getHomeTestimonial() {
   return sanityClient.fetch<Testimonial | null>(homeTestimonialQuery);
+}
+
+export async function getHomeTestimonials() {
+  return sanityClient.fetch<Testimonial[]>(homeTestimonialsQuery);
 }
 
 export async function getHeroImage() {

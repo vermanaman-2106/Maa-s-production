@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   getFeaturedFilms,
   getFeaturedWeddingStories,
-  getHomeTestimonial,
+  getHomeTestimonials,
   getHeroImage,
   getAbout,
   getFeaturedGalleryImages,
@@ -14,13 +14,14 @@ import { HomeGalleryStrip } from "@/components/home-gallery-strip";
 import { HomeFilmsSection } from "@/components/home-films-section";
 import { HomeWeddingStories } from "@/components/home-wedding-stories";
 import { HomeContactSection } from "@/components/home-contact-section";
+import { HomeTestimonials } from "@/components/home-testimonials";
 
 export default async function Home() {
-  const [stories, films, testimonial, heroData, about, galleryImages] =
+  const [stories, films, testimonials, heroData, about, galleryImages] =
     await Promise.all([
       getFeaturedWeddingStories().catch(() => []),
       getFeaturedFilms().catch(() => []),
-      getHomeTestimonial().catch(() => null),
+      getHomeTestimonials().catch(() => []),
       getHeroImage().catch(() => null),
       getAbout().catch(() => null),
       getFeaturedGalleryImages().catch(() => []),
@@ -171,43 +172,8 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Testimonials placeholder */}
-      <section className="mp-section">
-        <div className="mp-container grid gap-10 md:grid-cols-[1.1fr,0.9fr] md:items-center">
-          <div className="space-y-4">
-            <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted">
-              Testimonials
-            </p>
-            <h2 className="mp-section-title max-w-md">
-              The photos feel like being there again.
-            </h2>
-          </div>
-          <div className="space-y-6">
-            <figure className="space-y-3 rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] p-6">
-              <p className="mp-body mp-muted">
-                {testimonial?.quote ??
-                  "With Maa's Production, nothing feels staged. We blend into your families and quietly hold the in‑between moments you'll return to for years."}
-              </p>
-              <figcaption className="mp-body text-[0.85rem]">
-                <span className="font-medium">
-                  {testimonial?.coupleNames ?? "A couple in love"}
-                </span>
-                <span className="mp-muted">
-                  {" "}
-                  ·{" "}
-                  {testimonial?.locationOrContext ??
-                    "A wedding documented by Maa's Production"}
-                </span>
-              </figcaption>
-            </figure>
-            <p className="mp-body mp-muted text-[0.8rem]">
-              We photograph and film a limited number of weddings each year so
-              Maa's Production can remain fully present with your family from the
-              first ritual to the final goodbye.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Testimonials Section with slideshow */}
+      <HomeTestimonials testimonials={testimonials} />
 
       {/* Contact Section */}
       <HomeContactSection />

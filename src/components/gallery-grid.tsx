@@ -54,11 +54,11 @@ export function GalleryGrid({ images }: GalleryGridProps) {
     <>
       {/* Full-width masonry gallery */}
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-1 md:gap-2 lg:gap-2">
+        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-0">
           {validImages.map((item) => (
             <figure
               key={item._id}
-              className="relative mb-1 md:mb-2 lg:mb-2 overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] break-inside-avoid cursor-pointer group"
+              className="relative mb-0 overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] break-inside-avoid cursor-pointer group"
               onClick={() => handleImageClick(item)}
             >
               <div className="relative w-full overflow-hidden">

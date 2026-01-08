@@ -15,15 +15,15 @@ export function HomeFilmsSection({ films }: HomeFilmsSectionProps) {
     return asset && (asset._ref || (typeof asset === 'object' && '_ref' in asset));
   });
 
-  // Take first 3 films for the layout
-  const [leftTop, leftBottom, rightLarge] = filmsWithThumbnails.slice(0, 3);
+  // Take first 2 films: primary (left) and secondary (right)
+  const [primaryFilm, secondaryFilm] = filmsWithThumbnails.slice(0, 2);
 
   // Show section even if no films, but with message
   if (filmsWithThumbnails.length === 0) {
     return (
-      <section className="w-full border-b border-[var(--mp-border)] bg-[var(--mp-bg)]">
-        <div className="w-full max-w-[1920px] mx-auto px-8 md:px-12 lg:px-16 xl:px-20 py-16 md:py-24 lg:py-32">
-          <div className="mb-8 md:mb-12">
+      <section className="mp-section border-b border-[var(--mp-border)] bg-[var(--mp-bg)]">
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="mb-6">
             <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted mb-3">
               Films
             </p>
@@ -51,116 +51,100 @@ export function HomeFilmsSection({ films }: HomeFilmsSectionProps) {
   }
 
   return (
-    <section className="w-full border-b border-[var(--mp-border)] bg-[var(--mp-bg)]">
-      <div className="w-full max-w-[1920px] mx-auto px-8 md:px-12 lg:px-16 xl:px-20 py-16 md:py-24 lg:py-32">
+    <section className="mp-section border-b border-[var(--mp-border)] bg-[var(--mp-bg)]">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 space-y-6">
         {/* Header */}
-        <div className="mb-12 md:mb-16 lg:mb-20">
-          <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted mb-3">
-            Films
-          </p>
-          <h2 className="mp-section-title">Moving, not just moving images</h2>
-          <p className="mp-body mp-muted max-w-2xl mt-4">
-            A collection of cinematic wedding films that capture the emotion and
-            essence of each celebration.
-          </p>
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="mp-body text-[0.78rem] tracking-[0.26em] uppercase mp-muted mb-3">
+              Films
+            </p>
+            <h2 className="mp-section-title">Moving, not just moving images</h2>
+            <p className="mp-body mp-muted max-w-2xl mt-4">
+              A collection of cinematic wedding films that capture the emotion and
+              essence of each celebration.
+            </p>
+          </div>
         </div>
 
-        {/* Editorial Split-Grid Layout - Row-wise */}
-        <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
-          {/* Top Row: Two images side by side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-            {/* Left image */}
-            {leftTop && (
-              <Link
-                href={`/films#${leftTop.slug}`}
-                className="relative w-full overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] group cursor-pointer block"
-              >
-                <div className="relative w-full aspect-[4/5] md:aspect-[3/4]">
-                  <Image
-                    src={urlForImage(leftTop.thumbnail!).width(1200).quality(90).url()}
-                    alt={
-                      leftTop.thumbnail?.alt ||
-                      `${leftTop.title} wedding film by Maa's Production`
-                    }
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    unoptimized
-                  />
-                </div>
-                {/* Overlay with title */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <h3 className="mp-heading text-white text-base md:text-lg tracking-[0.15em] uppercase">
-                    {leftTop.title}
-                  </h3>
-                </div>
-              </Link>
-            )}
-
-            {/* Right image */}
-            {leftBottom && (
-              <Link
-                href={`/films#${leftBottom.slug}`}
-                className="relative w-full overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] group cursor-pointer block"
-              >
-                <div className="relative w-full aspect-[4/5] md:aspect-[3/4]">
-                  <Image
-                    src={urlForImage(leftBottom.thumbnail!).width(1200).quality(90).url()}
-                    alt={
-                      leftBottom.thumbnail?.alt ||
-                      `${leftBottom.title} wedding film by Maa's Production`
-                    }
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    unoptimized
-                  />
-                </div>
-                {/* Overlay with title */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <h3 className="mp-heading text-white text-base md:text-lg tracking-[0.15em] uppercase">
-                    {leftBottom.title}
-                  </h3>
-                </div>
-              </Link>
-            )}
-          </div>
-
-          {/* Bottom Row: One large image spanning full width */}
-          {rightLarge && (
+        {/* Two-Film Layout: Primary (Left) & Secondary (Right) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+          {/* Primary Film - Left Column */}
+          {primaryFilm && (
             <Link
-              href={`/films#${rightLarge.slug}`}
-              className="relative w-full min-h-[400px] md:min-h-[500px] lg:min-h-[600px] overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] group cursor-pointer block"
+              href={`/films#${primaryFilm.slug}`}
+              className="relative w-full overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] group cursor-pointer block"
             >
-              <div className="relative w-full h-full">
+              {/* Primary Film Image - Larger height */}
+              <div className="relative w-full" style={{ height: 'clamp(380px, 28vw, 420px)' }}>
                 <Image
-                  src={urlForImage(rightLarge.thumbnail!).width(1600).quality(90).url()}
+                  src={urlForImage(primaryFilm.thumbnail!).width(1200).quality(90).url()}
                   alt={
-                    rightLarge.thumbnail?.alt ||
-                    `${rightLarge.title} wedding film by Maa's Production`
+                    primaryFilm.thumbnail?.alt ||
+                    `${primaryFilm.title} wedding film by Maa's Production`
                   }
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                  sizes="100vw"
+                  className="object-cover transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-95"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   unoptimized
                 />
               </div>
-              {/* Overlay with title */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <h3 className="mp-heading text-white text-xl md:text-2xl lg:text-3xl tracking-[0.12em] uppercase">
-                  {rightLarge.title}
+
+              {/* Content Overlay - Always visible, minimal */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 pointer-events-none">
+                <h3 className="mp-heading text-white text-lg md:text-xl tracking-[0.12em] uppercase mb-1">
+                  {primaryFilm.title}
                 </h3>
+                {primaryFilm.coupleNames && (
+                  <p className="mp-body text-white/90 text-sm md:text-base">
+                    {primaryFilm.coupleNames}
+                  </p>
+                )}
+              </div>
+            </Link>
+          )}
+
+          {/* Secondary Film - Right Column */}
+          {secondaryFilm && (
+            <Link
+              href={`/films#${secondaryFilm.slug}`}
+              className="relative w-full overflow-hidden rounded-2xl border border-[var(--mp-border)] bg-[#fffaf7] group cursor-pointer block md:mt-8"
+            >
+              {/* Secondary Film Image - Smaller height */}
+              <div className="relative w-full" style={{ height: 'clamp(280px, 20vw, 320px)' }}>
+                <Image
+                  src={urlForImage(secondaryFilm.thumbnail!).width(1200).quality(90).url()}
+                  alt={
+                    secondaryFilm.thumbnail?.alt ||
+                    `${secondaryFilm.title} wedding film by Maa's Production`
+                  }
+                  fill
+                  className="object-cover transition-all duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-95"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  unoptimized
+                />
+              </div>
+
+              {/* Content Overlay - Always visible, minimal */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
+                <h3 className="mp-heading text-white text-base md:text-lg tracking-[0.12em] uppercase mb-1">
+                  {secondaryFilm.title}
+                </h3>
+                {secondaryFilm.coupleNames && (
+                  <p className="mp-body text-white/90 text-sm">
+                    {secondaryFilm.coupleNames}
+                  </p>
+                )}
               </div>
             </Link>
           )}
         </div>
 
-        {/* View all link */}
-        {filmsWithThumbnails.length > 3 && (
-          <div className="mt-16 md:mt-20 lg:mt-24 text-center">
+        {/* View all link - only show if more than 2 films */}
+        {filmsWithThumbnails.length > 2 && (
+          <div className="pt-4 text-center">
             <Link href="/films" className="mp-button-ghost">
               View all films
             </Link>
@@ -170,4 +154,3 @@ export function HomeFilmsSection({ films }: HomeFilmsSectionProps) {
     </section>
   );
 }
-

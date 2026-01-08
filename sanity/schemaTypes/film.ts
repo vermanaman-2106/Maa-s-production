@@ -60,6 +60,12 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "coupleNames",
+      title: "Couple Names",
+      type: "string",
+      description: "Names of the couple (e.g., 'Priya & Rahul')",
+    }),
+    defineField({
       name: "featured",
       title: "Show as featured on home page",
       type: "boolean",

@@ -11,7 +11,7 @@ const variants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.33, 0.01, 0.16, 0.99],
+      ease: [0.33, 0.01, 0.16, 0.99] as [number, number, number, number],
     },
   },
   exit: {
@@ -19,7 +19,7 @@ const variants = {
     y: -8,
     transition: {
       duration: 0.35,
-      ease: [0.33, 0.01, 0.16, 0.99],
+      ease: [0.33, 0.01, 0.16, 0.99] as [number, number, number, number],
     },
   },
 };
@@ -42,5 +42,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
     </AnimatePresence>
   );
 }
+
 
 
